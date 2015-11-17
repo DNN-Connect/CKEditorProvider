@@ -119,6 +119,7 @@
 	                        <asp:ListItem Text="None" Value="none" Enabled="true"></asp:ListItem>
 	                        <asp:ListItem Text="Standard" Value="standard" ></asp:ListItem>
 	                        <asp:ListItem Text="CKFinder" Value="ckfinder"></asp:ListItem>
+	                        <asp:ListItem Text="ElFinder" Value="elfinder"></asp:ListItem>
 	                      </asp:dropdownlist>
 				    </div>
 				    <div class="dnnFormItem">
