@@ -19,5 +19,15 @@ namespace ElFinder.DTO
         /// </summary>
         [DataMember(Name = "dirs")]
         public byte ContainsChildDirs { get; set; }
+
+        [DataMember(Name = "url")]
+        public string Url {
+            get
+            {
+                return "1";
+            }
+        }
+
+
     }
 }
