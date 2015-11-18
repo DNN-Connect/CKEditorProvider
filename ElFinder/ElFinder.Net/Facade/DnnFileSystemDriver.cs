@@ -160,7 +160,7 @@ namespace ElFinder
             }
             foreach (var item in _folderManager.GetFolders(fullPath.Directory))
             {
-                if (HasPermissions(item))
+                if (HasReadPermissions(item))
                     answer.Files.Add(DTOBase.Create(item, fullPath.Root));
             }
             return Json(answer);
@@ -198,7 +198,7 @@ namespace ElFinder
             }
             foreach (var item in _folderManager.GetFolders(fullPath.Directory))
             {
-                if (HasPermissions(item))
+                if (HasReadPermissions(item))
                     answer.Files.Add(DTOBase.Create(item, fullPath.Root));
             }
 
@@ -215,7 +215,7 @@ namespace ElFinder
                 //}
                 foreach (var item in _folderManager.GetFolders(fullPath.Root.Directory))
                 {
-                    if (HasPermissions(item))
+                    if (HasReadPermissions(item))
                         answer.Files.Add(DTOBase.Create(item, fullPath.Root));
                 }
 
@@ -267,7 +267,7 @@ namespace ElFinder
             TreeResponse answer = new TreeResponse();
             foreach (var item in _folderManager.GetFolders(fullPath.Directory))
             {
-                if (HasPermissions(item))
+                if (HasReadPermissions(item))
                     answer.Tree.Add(DTOBase.Create(item, fullPath.Root));
             }
             return Json(answer);
@@ -581,9 +581,13 @@ namespace ElFinder
 
         #endregion IDriver
 
-        internal static bool HasPermissions(IFolderInfo folder)
+        internal static bool HasReadPermissions(IFolderInfo folder)
         {
             return _permissionProvider.CanBrowseFolder(folder as FolderInfo);
+        }
+        internal static bool HasWritePermissions(IFolderInfo folder)
+        {
+            return _permissionProvider.CanManageFolder(folder as FolderInfo);
         }
     }
 }
