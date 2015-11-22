@@ -47,8 +47,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -81,19 +80,12 @@
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -114,51 +106,6 @@
     <Compile Include="Controls\UrlControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ElFinder\Browser.aspx.cs">
-      <DependentUpon>Browser.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ElFinder\Browser.aspx.designer.cs">
-      <DependentUpon>Browser.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ElFinder\Command.ashx.cs">
-      <DependentUpon>Command.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="ElFinder\ElFinder.Net\DownloadFileResult.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\DTO\DirectoryDTO.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\DTO\DTOBase.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\DTO\Error.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\DTO\FileDTO.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\DTO\ImageDTO.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\DTO\RootDTO.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Facade\Connector.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Facade\DnnFileSystemDriver.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Facade\FullPath.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Facade\IDriver.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Facade\Root.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Helper.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\HttpCacheHelper.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\JsonDataContractResult.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Mime.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\PicturesEditor\DefaultPicturesEditor.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\PicturesEditor\ImageWithMime.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\PicturesEditor\IPicturesEditor.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\AddResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\ChangedResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\UrlResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\DimResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\GetResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\ListResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\Open\Debug.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\Open\InitResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\Open\OpenResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\Open\OpenResponseBase.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\Open\Options.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\PutResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\RemoveResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\ReplaceResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\ThumbsResponse.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\Response\TreeResponse.cs" />
     <Compile Include="Extensions\CustomAttributeExtensions.cs" />
     <Compile Include="Module\EditorConfigManager.ascx.cs">
       <DependentUpon>EditorConfigManager.ascx</DependentUpon>
@@ -265,65 +212,8 @@
     <Content Include="Browser\jquery.fileupload-ui.css" />
     <Content Include="Browser\jquery.fileupload.css" />
     <Content Include="CKEditorConfig.png" />
-    <Content Include="ElFinder\Browser.aspx" />
-    <Content Include="ElFinder\css\reset.css" />
-    <Content Include="ElFinder\css\elfinder.full.css" />
-    <Content Include="ElFinder\css\elfinder.min.css" />
-    <Content Include="ElFinder\css\dnn.theme.css" />
-    <EmbeddedResource Include="ElFinder\ElFinder.Net\mimeTypes.txt" />
-    <Content Include="ElFinder\img\arrows-active.png" />
-    <Content Include="ElFinder\img\arrows-normal.png" />
-    <Content Include="ElFinder\img\crop.gif" />
-    <Content Include="ElFinder\img\dialogs.png" />
-    <Content Include="ElFinder\img\icons-big.png" />
-    <Content Include="ElFinder\img\icons-small.png" />
-    <Content Include="ElFinder\img\logo.png" />
-    <Content Include="ElFinder\img\progress.gif" />
-    <Content Include="ElFinder\img\quicklook-bg.png" />
-    <Content Include="ElFinder\img\quicklook-icons.png" />
-    <Content Include="ElFinder\img\resize.png" />
-    <Content Include="ElFinder\img\spinner-mini.gif" />
-    <Content Include="ElFinder\img\toolbar.png" />
-    <Content Include="ElFinder\img\volume_icon_dropbox.png" />
-    <Content Include="ElFinder\img\volume_icon_ftp.png" />
-    <Content Include="ElFinder\img\volume_icon_local.png" />
-    <Content Include="ElFinder\img\volume_icon_sql.png" />
-    <Content Include="ElFinder\js\elfinder.full.js" />
-    <Content Include="ElFinder\js\elfinder.min.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.ar.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.bg.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.ca.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.cs.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.da.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.de.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.el.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.es.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.fa.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.fr.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.he.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.hu.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.id.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.it.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.jp.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.ko.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.LANG.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.nl.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.no.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.pl.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.pt_BR.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.ro.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.ru.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.sk.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.sl.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.sr.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.sv.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.tr.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.uk.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.vi.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.zh_CN.js" />
-    <Content Include="ElFinder\js\i18n\elfinder.zh_TW.js" />
-    <Content Include="ElFinder\js\proxy\elFinderSupportVer1.js" />
-    <Content Include="ElFinder\sounds\rm.wav" />
+    <Content Include="css\CkEditorContents.css" />
+    <Content Include="css\CkEditorToolBars.css" />
     <Content Include="Install\CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -381,8 +271,6 @@
     <Content Include="Browser\FileUploader.ashx" />
     <Content Include="Browser\Browser.comb.css.bundle" />
     <Content Include="Install\01.00.00.SqlDataProvider" />
-    <Content Include="ElFinder\Command.ashx" />
-    <Content Include="BuildScripts\Package.targets" />
     <None Include="Install\Uninstall.SqlDataProvider" />
     <None Include="DNNConnect.CKEditorProvider.dnn">
       <SubType>Designer</SubType>
