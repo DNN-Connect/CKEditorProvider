@@ -17,8 +17,13 @@ namespace DNNConnect.CKEditorProvider.Constants
         StandardBrowser = 1,
 
         /// <summary>
-        /// ckfinder browser
+        /// CKFinder browser
         /// </summary>
-        CKFinder = 2
+        CKFinder = 2,
+
+        /// <summary>
+        /// ElFinder browser
+        /// </summary>
+        ElFinder = 3
     }
 }
