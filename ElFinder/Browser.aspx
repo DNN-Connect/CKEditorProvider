@@ -49,6 +49,7 @@
 		
 				var actionsHeight = $('.elfinder-actions').height() + 10;
 				options.resizable = false;
+				options.disableInfoLink = true;
                 options.height = $(window).innerHeight() - actionsHeight;
                 options.handlers= {
                     select: function (event, elfinderInstance) {
