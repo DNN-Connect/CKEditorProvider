@@ -302,8 +302,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 Value = string.Format("p{0}", portal.PortalID),
                 ImageUrl =
                     portalSettingsExists
-                        ? "../CKEditor/images/PortalHasSetting.png"
-                        : "../CKEditor/images/PortalNoSetting.png",
+                        ? "../Images/PortalHasSetting.png"
+                        : "../Images/PortalNoSetting.png",
                 Expanded = PortalOnly.Checked
             };
 
@@ -339,8 +339,8 @@ namespace DNNConnect.CKEditorProvider.Module
                                   Value = string.Format("t{0}", tabInfo.TabID),
                                   ImageUrl =
                                       tabSettingsExists
-                                          ? "../CKEditor/images/PageHasSetting.png"
-                                          : "../CKEditor/images/PageNoSetting.png"
+                                          ? "../Images/PageHasSetting.png"
+                                          : "../Images/PageNoSetting.png"
                               };
 
             if (tabInfo.HasChildren)
@@ -363,8 +363,8 @@ namespace DNNConnect.CKEditorProvider.Module
                                                    Text = moduleInfo.ModuleTitle,
                                                    ImageUrl =
                                                        moduleSettingsExists
-                                                           ? "../CKEditor/images/ModuleHasSetting.png"
-                                                           : "../CKEditor/images/ModuleNoSetting.png",
+                                                           ? "../Images/ModuleHasSetting.png"
+                                                           : "../Images/ModuleNoSetting.png",
                                                    Value = string.Format("m{0}", moduleInfo.ModuleID)
                                                })
             {

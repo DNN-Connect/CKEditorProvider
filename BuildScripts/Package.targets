@@ -34,7 +34,7 @@
       <JsFiles Include="js\*.js;Browser\js\*.js;js\**\*.*;ElFinder\js\**\*.*" />
     </ItemGroup>
     <ItemGroup>
-      <ImagesFiles Include="Browser\images\**\*.*;ElFinder\img\*.*;ElFinder\sounds\*" />
+      <ImagesFiles Include="Images\*.*;Browser\images\**\*.*;ElFinder\img\*.*;ElFinder\sounds\*" />
     </ItemGroup>
     <ItemGroup>
       <ResourceFiles Include="App_LocalResources\*.resx" />

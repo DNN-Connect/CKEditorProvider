@@ -57,7 +57,8 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NOWARN>1591</NOWARN>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -321,6 +322,14 @@
     <Content Include="ElFinder\js\i18n\elfinder.zh_TW.js" />
     <Content Include="ElFinder\js\proxy\elFinderSupportVer1.js" />
     <Content Include="ElFinder\sounds\rm.wav" />
+    <Content Include="css\CkEditorContents.css" />
+    <Content Include="css\CkEditorToolBars.css" />
+    <Content Include="Images\ModuleHasSetting.png" />
+    <Content Include="Images\ModuleNoSetting.png" />
+    <Content Include="Images\PageHasSetting.png" />
+    <Content Include="Images\PageNoSetting.png" />
+    <Content Include="Images\PortalHasSetting.png" />
+    <Content Include="Images\PortalNoSetting.png" />
     <Content Include="Install\CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
