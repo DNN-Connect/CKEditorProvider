@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
-using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
+
 using ElFinder.DTO;
 using System.IO;
 
@@ -19,7 +20,7 @@ namespace ElFinder
         /// <param name="driver">Driver to process request</param>
         public Connector(IDriver driver)
         {
-            _driver = driver;             
+            _driver = driver;
         }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace ElFinder
         /// </summary>
         /// <param name="request">Request from elFinder</param>
         /// <returns>Json response, which must be sent to elfinder</returns>
-        public ActionResult Process(HttpRequest request)
+        public object Process(HttpRequest request)
         {
             NameValueCollection parameters = request.HttpMethod != "POST" ? request.QueryString : request.Form;
 
@@ -194,28 +195,28 @@ namespace ElFinder
             return !path.IsDirectoty ? (FileSystemInfo)path.File : (FileSystemInfo)path.Directory;
         }
 
-        public ActionResult GetThumbnail(HttpRequestBase request, HttpResponseBase response, string hash)
-        {
-            string thumbHash = hash;
-            if (thumbHash != null)
-            {
-                FullPath path = _driver.ParsePath(thumbHash);
-                if (!path.IsDirectoty && path.Root.CanCreateThumbnail(path.File))
-                {
-                    if (!HttpCacheHelper.IsFileFromCache(path.File, request, response))
-                    {
-                        ImageWithMime thumb = path.Root.GenerateThumbnail(path);
-                        return new FileStreamResult(thumb.ImageStream, thumb.Mime);                        
-                    }
-                    else
-                    {
-                        response.ContentType = Helper.GetMimeType(path.Root.PicturesEditor.ConvertThumbnailExtension(path.File.Extension));
-                        response.End();
-                    }
-                }
-            }
-            return new EmptyResult();
-        }
+        //public ActionResult GetThumbnail(HttpRequestBase request, HttpResponseBase response, string hash)
+        //{
+        //    string thumbHash = hash;
+        //    if (thumbHash != null)
+        //    {
+        //        FullPath path = _driver.ParsePath(thumbHash);
+        //        if (!path.IsDirectoty && path.Root.CanCreateThumbnail(path.File))
+        //        {
+        //            if (!HttpCacheHelper.IsFileFromCache(path.File, request, response))
+        //            {
+        //                ImageWithMime thumb = path.Root.GenerateThumbnail(path);
+        //                return new FileStreamResult(thumb.ImageStream, thumb.Mime);                        
+        //            }
+        //            else
+        //            {
+        //                response.ContentType = Helper.GetMimeType(path.Root.PicturesEditor.ConvertThumbnailExtension(path.File.Extension));
+        //                response.End();
+        //            }
+        //        }
+        //    }
+        //    return new EmptyResult();
+        //}
 
         private IEnumerable<string> GetTargetsArray(HttpRequest request)
         {

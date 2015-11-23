@@ -1,36 +1,37 @@
-﻿using System.Web.Mvc;
+﻿using Newtonsoft.Json.Linq;
+
 
 namespace ElFinder.DTO
 {
     internal static class Error
     {       
-        public static JsonResult CommandNotFound()
+        public static JObject CommandNotFound()
         {
             return FormatSimpleError("errUnknownCmd");
         }
-        public static JsonResult MissedParameter(string command)
+        public static JObject MissedParameter(string command)
         {
             return Json(new { error = new string[] { "errCmdParams", command } });
         }
-        public static JsonResult CannotUploadFile()
+        public static JObject CannotUploadFile()
         {
             return FormatSimpleError("errUploadFile");
         }
-        public static JsonResult MaxUploadFileSize()
+        public static JObject MaxUploadFileSize()
         {
             return FormatSimpleError("errFileMaxSize");
         }
-        public static JsonResult AccessDenied()
+        public static JObject AccessDenied()
         {
             return FormatSimpleError("errAccess");
         }
-        private static JsonResult FormatSimpleError(string message)
+        private static JObject FormatSimpleError(string message)
         {
             return Json(new { error = message });
         }
-        private static JsonResult Json(object data)
+        private static JObject Json(object data)
         {
-            return new JsonDataContractResult(data) { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            return JObject.FromObject(data);
         }
     }
 }

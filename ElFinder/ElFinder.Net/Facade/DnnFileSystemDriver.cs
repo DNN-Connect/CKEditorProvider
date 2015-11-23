@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
 
 using ElFinder.DTO;
 using ElFinder.Response;
@@ -29,9 +29,9 @@ namespace ElFinder
         static private IFolderManager _folderManager = FolderManager.Instance;
         static private IFileManager _fileManager = FileManager.Instance;
 
-        private JsonResult Json(object data)
+        private JObject Json(object data)
         {
-            return new JsonDataContractResult(data) { JsonRequestBehavior = JsonRequestBehavior.AllowGet, ContentType = "text/html" };
+            return JObject.FromObject(data);
         }
         private void DirectoryCopy(IFolderInfo sourceDir, string destDirName, bool copySubDirs)
         {
@@ -149,7 +149,7 @@ namespace ElFinder
         #endregion public
 
         #region   IDriver
-        JsonResult IDriver.Open(string target, bool tree)
+        JObject IDriver.Open(string target, bool tree)
         {
             FullPath fullPath = ParsePath(target);
             OpenResponse answer = new OpenResponse(DTOBase.Create(fullPath.Directory, fullPath.Root), fullPath);
@@ -165,7 +165,7 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        JsonResult IDriver.Init(string target)
+        JObject IDriver.Init(string target)
         {
             FullPath fullPath;
             if (string.IsNullOrEmpty(target))
@@ -226,18 +226,19 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        ActionResult IDriver.File(string target, bool download)
+        DownloadFileResult IDriver.File(string target, bool download)
         {
             FullPath fullPath = ParsePath(target);
             if (fullPath.IsDirectoty)
-                return new HttpStatusCodeResult(403, "You can not download whole folder");
+                throw new HttpException(403, "You can not download whole folder");
             //if (!_fileManager.FileExists(fullPath.File)) // TODO: file exists
             //    return new HttpNotFoundResult("File not found");
             if (fullPath.Root.IsShowOnly)
-                return new HttpStatusCodeResult(403, "Access denied. Volume is for show only");
+                throw new HttpException(403, "Access denied. Volume is for show only");
+
             return new DownloadFileResult(fullPath.File, download);
         }
-        JsonResult IDriver.Parents(string target)
+        JObject IDriver.Parents(string target)
         {
             FullPath fullPath = ParsePath(target);
             TreeResponse answer = new TreeResponse();
@@ -261,7 +262,7 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        JsonResult IDriver.Tree(string target)
+        JObject IDriver.Tree(string target)
         {
             FullPath fullPath = ParsePath(target);
             TreeResponse answer = new TreeResponse();
@@ -272,7 +273,7 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        JsonResult IDriver.List(string target)
+        JObject IDriver.List(string target)
         {
             FullPath fullPath = ParsePath(target);
             ListResponse answer = new ListResponse();
@@ -283,20 +284,20 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        JsonResult IDriver.MakeDir(string target, string name)
+        JObject IDriver.MakeDir(string target, string name)
         {
             FullPath fullPath = ParsePath(target);
             IFolderInfo newDir = _folderManager.AddFolder(fullPath.Directory.PortalID, Path.Combine(fullPath.Directory.FolderPath, name));
             return Json(new AddResponse(newDir, fullPath.Root));
         }
-        //JsonResult IDriver.MakeFile(string target, string name)
+        //JObject IDriver.MakeFile(string target, string name)
         //{
         //    FullPath fullPath = ParsePath(target);
         //    FileInfo newFile = new FileInfo(Path.Combine(fullPath.Directory.FullName, name));
         //    newFile.Create().Close();
         //    return Json(new AddResponse(newFile, fullPath.Root));
         //}
-        JsonResult IDriver.Rename(string target, string name)
+        JObject IDriver.Rename(string target, string name)
         {
             FullPath fullPath = ParsePath(target);
             var answer = new ReplaceResponse();
@@ -318,7 +319,7 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        JsonResult IDriver.Remove(IEnumerable<string> targets)
+        JObject IDriver.Remove(IEnumerable<string> targets)
         {
             RemoveResponse answer = new RemoveResponse();
             foreach (string item in targets)
@@ -340,7 +341,7 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        JsonResult IDriver.Get(string target)
+        JObject IDriver.Get(string target)
         {
             FullPath fullPath = ParsePath(target);
             GetResponse answer = new GetResponse();
@@ -350,7 +351,7 @@ namespace ElFinder
             }
             return Json(answer);
         }
-        //JsonResult IDriver.Put(string target, string content)
+        //JObject IDriver.Put(string target, string content)
         //{
         //    FullPath fullPath = ParsePath(target);
         //    ChangedResponse answer = new ChangedResponse();
@@ -361,7 +362,7 @@ namespace ElFinder
         //    answer.Changed.Add((FileDTO)DTOBase.Create(fullPath.File, fullPath.Root));
         //    return Json(answer);
         //}
-        JsonResult IDriver.Paste(string source, string dest, IEnumerable<string> targets, bool isCut)
+        JObject IDriver.Paste(string source, string dest, IEnumerable<string> targets, bool isCut)
         {
             FullPath destPath = ParsePath(dest);
             ReplaceResponse response = new ReplaceResponse(); // TODO:
@@ -405,7 +406,7 @@ namespace ElFinder
             //}
             return Json(response);
         }
-        JsonResult IDriver.Upload(string target, System.Web.HttpFileCollection targets)
+        JObject IDriver.Upload(string target, System.Web.HttpFileCollection targets)
         {
             FullPath dest = ParsePath(target);
             var response = new AddResponse();
@@ -468,7 +469,7 @@ namespace ElFinder
             }
             return Json(response);
         }
-        //JsonResult IDriver.Duplicate(IEnumerable<string> targets)
+        //JObject IDriver.Duplicate(IEnumerable<string> targets)
         //{
         //    AddResponse response = new AddResponse();
         //    foreach (var target in targets)
@@ -526,7 +527,7 @@ namespace ElFinder
         //    }
         //    return Json(response);
         //}
-        JsonResult IDriver.Thumbs(IEnumerable<string> targets)
+        JObject IDriver.Thumbs(IEnumerable<string> targets)
         {
             ThumbsResponse response = new ThumbsResponse();
             foreach (string target in targets)
@@ -536,13 +537,13 @@ namespace ElFinder
             }
             return Json(response);
         }
-        JsonResult IDriver.Dim(string target)
+        JObject IDriver.Dim(string target)
         {
             FullPath path = ParsePath(target);
             DimResponse response = new DimResponse(string.Format("{0}x{1}", path.File.Width, path.File.Height));//path.Root.GetImageDimension(path.File));
             return Json(response);
         }
-        //JsonResult IDriver.Resize(string target, int width, int height)
+        //JObject IDriver.Resize(string target, int width, int height)
         //{
         //    FullPath path = ParsePath(target);
         //    RemoveThumbs(path);
@@ -551,7 +552,7 @@ namespace ElFinder
         //    output.Changed.Add((FileDTO)DTOBase.Create(path.File, path.Root));
         //    return Json(output);
         //}
-        //JsonResult IDriver.Crop(string target, int x, int y, int width, int height)
+        //JObject IDriver.Crop(string target, int x, int y, int width, int height)
         //{
         //    FullPath path = ParsePath(target);
         //    RemoveThumbs(path);
@@ -560,7 +561,7 @@ namespace ElFinder
         //    output.Changed.Add((FileDTO)DTOBase.Create(path.File, path.Root));
         //    return Json(output);
         //}
-        //JsonResult IDriver.Rotate(string target, int degree)
+        //JObject IDriver.Rotate(string target, int degree)
         //{
         //    FullPath path = ParsePath(target);
         //    RemoveThumbs(path);
@@ -570,7 +571,7 @@ namespace ElFinder
         //    return Json(output);
         //}
 
-        JsonResult IDriver.Url(string target)
+        JObject IDriver.Url(string target)
         {
             FullPath path = ParsePath(target);
 

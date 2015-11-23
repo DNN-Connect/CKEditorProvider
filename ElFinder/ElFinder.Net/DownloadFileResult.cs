@@ -1,11 +1,12 @@
 ﻿using DotNetNuke.Services.FileSystem;
 using System.IO;
 using System.Web;
-using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
+
 
 namespace ElFinder
 {
-    internal class DownloadFileResult : ActionResult
+    public class DownloadFileResult 
     {
         public IFileInfo File { get; private set; }
         public bool IsDownload { get; private set; }
@@ -15,13 +16,6 @@ namespace ElFinder
             IsDownload = isDownload;
         }
 
-        public override void ExecuteResult(ControllerContext context)
-        {
-            HttpResponseBase response = context.HttpContext.Response;
-            HttpRequestBase request = context.HttpContext.Request;
-
-            Download(response, request);
-        }
 
         public void Download(HttpResponseBase response, HttpRequestBase request)
         {

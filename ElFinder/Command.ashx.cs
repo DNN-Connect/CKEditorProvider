@@ -19,7 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
-using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
+
 using ElFinder;
 using System.Reflection;
 using System.Collections.Specialized;
@@ -105,13 +106,13 @@ namespace DNNConnect.CKEditorProvider.ElFinder
 
             var result = connector.Process(context.Request);
 
-            var jsonResult = result as JsonResult;
+            var jsonResult = result as JObject;
 
             if (jsonResult != null)
             {
-                string json = JsonConvert.SerializeObject(jsonResult.Data);
+                string json = jsonResult.ToString(Formatting.None);
 
-                context.Response.ContentType = jsonResult.ContentType;
+                context.Response.ContentType = "text/html";
 
                 context.Response.Write(json);
             }

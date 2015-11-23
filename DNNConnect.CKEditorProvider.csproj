@@ -89,7 +89,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -134,7 +133,6 @@
     <Compile Include="ElFinder\ElFinder.Net\Facade\Root.cs" />
     <Compile Include="ElFinder\ElFinder.Net\Helper.cs" />
     <Compile Include="ElFinder\ElFinder.Net\HttpCacheHelper.cs" />
-    <Compile Include="ElFinder\ElFinder.Net\JsonDataContractResult.cs" />
     <Compile Include="ElFinder\ElFinder.Net\Mime.cs" />
     <Compile Include="ElFinder\ElFinder.Net\PicturesEditor\DefaultPicturesEditor.cs" />
     <Compile Include="ElFinder\ElFinder.Net\PicturesEditor\ImageWithMime.cs" />
