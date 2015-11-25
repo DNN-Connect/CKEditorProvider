@@ -271,6 +271,9 @@
     <Content Include="ElFinder\img\arrows-normal.png" />
     <Content Include="ElFinder\img\crop.gif" />
     <Content Include="ElFinder\img\dialogs.png" />
+    <Content Include="ElFinder\img\dnn.icons-big.png" />
+    <Content Include="ElFinder\img\dnn.icons-small.png" />
+    <Content Include="ElFinder\img\dnn.toolbar.png" />
     <Content Include="ElFinder\img\icons-big.png" />
     <Content Include="ElFinder\img\icons-small.png" />
     <Content Include="ElFinder\img\logo.png" />

@@ -160,7 +160,6 @@ namespace DNNConnect.CKEditorProvider.ElFinder
                     toolbar = new object[] {
                             new string[] { "back", "forward" },
                             new string[] {"reload" },
-                            new string[] {"home", "up" },
                             new string[] {"mkdir", "upload" },
                             new string[] {"download" },
                             new string[] {"info" },
@@ -168,7 +167,7 @@ namespace DNNConnect.CKEditorProvider.ElFinder
                            // new string[] {"copy", "cut", "paste" },
                             new string[] {"rm" },
                             new string[] {"rename" },
-                            new string[] {"view", "sort" }
+                            new string[] {"view" }
                         }
                 },
                 CKEditorFuncNum = Request.QueryString["CKEditorFuncNum"]
