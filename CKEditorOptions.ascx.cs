@@ -29,6 +29,9 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
@@ -510,8 +513,6 @@ namespace DNNConnect.CKEditorProvider
 
             string sXmlImport = ImportFile.Url;
 
-            upOptions.Update();
-
             // RESET Dialog 
             ImportFile.Url = null;
 
@@ -575,8 +576,6 @@ namespace DNNConnect.CKEditorProvider
             {
                 ShowNotification(exception.Message, "error");
             }
-
-            upOptions.Update();
         }
 
         /// <summary>
@@ -3101,7 +3100,7 @@ namespace DNNConnect.CKEditorProvider
                         : _portalSettings.HomeDirectoryMapPath);
             }
 
-            ShowNotification(Localization.GetString("lblInfo.Text", ResXFile, LangCode), "success");
+            Skin.AddModuleMessage(this, Localization.GetString("lblInfo.Text", ResXFile, LangCode), ModuleMessage.ModuleMessageType.GreenSuccess);
 
             BindOptionsData(true);
         }
