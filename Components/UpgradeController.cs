@@ -20,8 +20,8 @@ namespace DNNConnect.CKEditorProvider.Components
         {
             switch (version)
             {
-                case "08.00.00":
-                    UpdateProviderConfig("8.0.0");
+                case "01.00.01":
+                    UpdateProviderConfig("01.00.01");
                     break;
             }
 
