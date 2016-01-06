@@ -1,5 +1,5 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="01.00.01">
+  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="01.00.02">
   <friendlyName>DNN Connect CKEditor Provider</friendlyName>
   <description>CKEditor Provider by DNN Connect for DNN</description>
   <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
@@ -98,7 +98,7 @@
     <attributes>
       <businessControllerClass>DNNConnect.CKEditorProvider.Components.UpgradeController, DNNConnect.CKEditorProvider</businessControllerClass>
       <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-      <upgradeVersionsList>01.00.01</upgradeVersionsList>
+      <upgradeVersionsList>01.00.02</upgradeVersionsList>
     </attributes>
   </eventMessage>
 
