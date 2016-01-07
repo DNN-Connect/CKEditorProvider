@@ -18,7 +18,6 @@
   </Target>
 
   <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin" />
   </Target>
   <Target Name="GetFiles">
     <ItemGroup>
