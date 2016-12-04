@@ -77,6 +77,9 @@ namespace DNNConnect.CKEditorProvider.ElFinder
 
         public void ProcessRequest(HttpContext context)
         {
+            if (!context.Request.IsAuthenticated)
+                return;
+
             _portalSettings = GetPortalSettings(context);
 
             NameValueCollection parameters = request.HttpMethod != "POST" ? request.QueryString : request.Form;

@@ -286,6 +286,10 @@ img {border:0}
 /* ModalDialog for Upload Dialog and Create Folder Dialog */
 .MessageBox{ position: absolute;z-index: 100;text-align: left; display:block;top: 96px; left: 220px;}  
 
+.MessageBox .modalHeader:hover {
+    cursor: move;
+}
+
 .ModalDialog .popup {
 	position:relative;
 	border:3px solid #000000;
@@ -330,7 +334,7 @@ img {border:0}
 
 .ModalFooter {float:right}
 
-.LoadingContent h3 {background: url(../CKEditor/Images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingContent h3 {background: url(../js/ckeditor/4.5.3/images/loading.gif) no-repeat 102px 5px;height:20px}
 .LoadingMessage {text-align:center}
 
 #cmdCreate img,
@@ -475,7 +479,7 @@ img {border:0}
 }
 .progress-animated .progress-bar,
 .progress-animated .bar {
-  background: url("../CKEditor/Images/progressbar.gif") !important;
+  background: url("Images/progressbar.gif") !important;
   filter: none;
 }
 .fileupload-process {
@@ -487,7 +491,7 @@ img {border:0}
   display: block;
   width: 32px;
   height: 32px;
-  background: url("../CKEditor/Images/loading.gif") center no-repeat;
+  background: url("../js/ckeditor/4.5.3/images/loading.gif") center no-repeat;
   background-size: contain;
 }
 .files audio,
