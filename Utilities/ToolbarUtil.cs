@@ -561,13 +561,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                              },
                                                          new ToolbarButton
                                                              {
-                                                                 ToolbarName =
-                                                                     "newsarticleslinks",
-                                                                 ToolbarIcon =
-                                                                     "newsarticleslinks.gif"
-                                                             },
-                                                         new ToolbarButton
-                                                             {
                                                                  ToolbarName = "-",
                                                                  ToolbarIcon =
                                                                      "separator.png"
@@ -750,10 +743,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                 "Find",
                                                 "Replace",
                                                 "-",
-                                                "SelectAll",
-                                                "-",
-                                                "SpellChecker",
-                                                "Scayt"
+                                                "SelectAll"
                                             },
                                     name = "editing"
                                 });

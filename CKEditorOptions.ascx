@@ -335,7 +335,11 @@
 
         <ul class="dnnActions dnnClear">
             <li><asp:Button id="btnOk" runat="server" Text="OK" CssClass="dnnPrimaryAction" /></li>
-	        <li><asp:Button id="btnCancel" runat="server" Text="Close" CssClass="dnnSecondaryAction" /></li>
+	        <li>
+	            <% if (!IsHostMode) { %>
+	                <a href="#" onclick="window.close();" class="dnnSecondaryAction"><%= LocalizeString("btnCancel.Text") %></a>
+                <% } %>
+	        </li>
         </ul>
             
         <ul class="dnnActions dnnClear">

@@ -22,6 +22,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
@@ -329,7 +330,8 @@ namespace DNNConnect.CKEditorProvider.Web
                 cssFiles.Add("~/portals/_default/default.css");
                 cssFiles.Add(skinSrc.Replace(skinSrc.Substring(skinSrc.LastIndexOf('/'), skinSrc.Length - skinSrc.Substring(0, skinSrc.LastIndexOf('/')).Length), "/skin.css"));
                 cssFiles.Add(containerSrc.Replace(containerSrc.Substring(containerSrc.LastIndexOf('/'), containerSrc.Length - containerSrc.Substring(0, containerSrc.LastIndexOf('/')).Length), "/container.css"));
-                cssFiles.Add("~/DesktopModules/" + myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
+                if (myParModule != null && myParModule.ModuleId > -1)
+                    cssFiles.Add("~/DesktopModules/" + myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
                 cssFiles.Add("~" + _portalSettings.HomeDirectory + "portal.css");
                 cssFiles.Add("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CkEditorContents.css");
 
@@ -337,7 +339,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 if (!string.IsNullOrEmpty(currentSettings.Config.ContentsCss))
                 {
-                    var customCss = Globals.ResolveUrl(ReFormatURL(currentSettings.Config.ContentsCss));
+                    var customCss = Globals.ResolveUrl(FormatUrl(currentSettings.Config.ContentsCss));
                     resolvedCssFiles.Add(customCss);
                 }
 
@@ -1013,11 +1015,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 sClientId = sClientId.Remove(ClientID.IndexOf("_"));
 
-                try
-                {
-                    parentModulId = int.Parse(sClientId);
-                }
-                catch (Exception)
+                if (!int.TryParse(sClientId, out parentModulId))
                 {
                     // The is no real module, then use the "User Accounts" module (Profile editor)
                     ModuleController db = new ModuleController();
@@ -1247,7 +1245,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </returns>
         private string SetUserToolbar(string alternateConfigSubFolder)
         {
-            string toolbarName = HttpContext.Current.Request.IsAuthenticated ? "Full" : "Basic";
+            string toolbarName = CanUseFullToolbarAsDefault() ? "Full" : "Basic";
 
             var listToolbarSets = ToolbarUtil.GetToolbars(
                 _portalSettings.HomeDirectoryMapPath, alternateConfigSubFolder);
@@ -1314,11 +1312,24 @@ namespace DNNConnect.CKEditorProvider.Web
             return ToolbarUtil.FindHighestToolbar(listUserToolbarSets, iHighestPrio).Name;
         }
 
+        private bool CanUseFullToolbarAsDefault()
+        {
+            if (!HttpContext.Current.Request.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            return currentUser.IsSuperUser || PortalSecurity.IsInRole(_portalSettings.AdministratorRoleName);
+        }
+
         /// <summary>
         /// Registers the CKEditor library.
         /// </summary>
         private void RegisterCKEditorLibrary()
         {
+            ClientResourceManager.RegisterStyleSheet(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
+            ClientResourceManager.RegisterStyleSheet(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
             ClientResourceManager.RegisterStyleSheet(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/editor.css"));
 
             ClientScriptManager cs = Page.ClientScript;
@@ -1367,6 +1378,8 @@ namespace DNNConnect.CKEditorProvider.Web
                     CsFindName,
                     Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"));
             }
+
+            ClientResourceManager.RegisterScript(Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js"));
 
             // Load Custom JS File
             if (!string.IsNullOrEmpty(currentSettings.CustomJsFile)
@@ -1490,6 +1503,10 @@ namespace DNNConnect.CKEditorProvider.Web
             editorScript.Append("}");
             editorScript.Append("});");
             editorScript.Append("});");
+
+            editorScript.Append("if(CKEDITOR && CKEDITOR.config){");
+            editorScript.Append("  CKEDITOR.config.portalId = " + _portalSettings.PortalId);
+            editorScript.Append("};");
 
             // End of LoadScript
             editorScript.Append("}");

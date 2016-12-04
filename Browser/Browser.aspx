@@ -285,7 +285,7 @@
           <td style="padding-top:9px">
             <asp:Label id="lblSubDirs" runat="server" Text="Subdirectories:"></asp:Label><br />
             <div id="FoldersBox">
-             <asp:TreeView ID="FoldersTree" runat="server" ExpandDepth="1" Image="Images/folder.gif"/>
+             <asp:TreeView ID="FoldersTree" runat="server" ExpandDepth="1" />
             </div>
             <asp:Label runat="server" ID="FileSpaceUsedLabel" CssClass="fileSpaceUsedLabel"></asp:Label>
           </td>
@@ -347,10 +347,7 @@
                     RepeatDirection="Vertical" CssClass="ButtonList" AutoPostBack="true">
                   <asp:ListItem Text="Relative URL" Value="relLnk" Selected="True"></asp:ListItem>
                   <asp:ListItem Text="Absolute URL" Value="absLnk"></asp:ListItem>
-                  <asp:ListItem Text="Relative Secure URL (via LinkClick)" Value="lnkClick"></asp:ListItem>
-                  <asp:ListItem Text="Absolute Secure URL (via LinkClick)" Value="lnkAbsClick"></asp:ListItem>
                 </asp:RadioButtonList>
-                <asp:CheckBox id="TrackClicks" runat="server" Text="Track User Clicks?" Visible="false" />
             </td>
             </tr>
           </table>
@@ -378,7 +375,6 @@
     </form>
     <script type="text/javascript">
         $(function() {
-            'use strict';
             var overrideFile = $('#<%= this.OverrideFile.ClientID %>').is(':checked');
             var maxFileSize = <%= this.MaxUploadSize %>;
 
@@ -386,14 +382,11 @@
                 url: "FileUploader.ashx",
                 acceptFileTypes: new RegExp('(\.|\/)(' + '<%= this.AcceptFileTypes %>' + ')', 'i'),
                 maxFileSize: maxFileSize,
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    if (progress == 100) {
-                        __doPostBack('cmdUploadNow', '');
-                    }
+                done: function() {
+                    __doPostBack('cmdUploadNow', '');
                 },
                 formData: {
-                    storageFolderID: '<%= GetFolderInfoID %>',
+                    storageFolderID: '<%= CurrentFolderId %>',
                     portalID: '<%= HttpContext.Current.Request.QueryString["PortalID"] %>',
                     overrideFiles: overrideFile
                 },
