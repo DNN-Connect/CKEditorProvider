@@ -502,7 +502,7 @@ namespace DNNConnect.CKEditorProvider.Web
                             }
 
                             _settings["filebrowserWindowWidth"] = "870";
-                            _settings["filebrowserWindowHeight"] = "800";
+                            _settings["filebrowserWindowHeight"] = "600";
 
                             // Set Browser Authorize 
                             const bool isAuthorized = true;
@@ -560,6 +560,85 @@ namespace DNNConnect.CKEditorProvider.Web
 
                             HttpContext.Current.Session["CKDNNRootDirId"] = currentSettings.BrowserRootDirId;
                             HttpContext.Current.Session["CKDNNUpDirId"] = currentSettings.UploadDirId;
+
+                            // Set Browser Authorize 
+                            const bool isAuthorized = true;
+
+                            HttpContext.Current.Session["CKE_DNNIsAuthorized"] = isAuthorized;
+
+                            DataCache.SetCache("CKE_DNNIsAuthorized", isAuthorized);
+                        }
+
+                        break;
+                    case BrowserType.ElFinder:
+                        {
+                            _settings["filebrowserBrowseUrl"] =
+                                Globals.ResolveUrl(
+                                    string.Format(
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Type=Link&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
+                                        CultureInfo.CurrentCulture.Name));
+                            _settings["filebrowserImageBrowseUrl"] =
+                                Globals.ResolveUrl(
+                                    string.Format(
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Type=Image&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
+                                        CultureInfo.CurrentCulture.Name));
+                            _settings["filebrowserFlashBrowseUrl"] =
+                                Globals.ResolveUrl(
+                                    string.Format(
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Type=Flash&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
+                                        CultureInfo.CurrentCulture.Name));
+
+                            if (Utility.CheckIfUserHasFolderWriteAccess(currentSettings.UploadDirId, _portalSettings))
+                            {
+                                _settings["filebrowserUploadUrl"] =
+                                    Globals.ResolveUrl(
+                                        string.Format(
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
+                                            CultureInfo.CurrentCulture.Name));
+                                _settings["filebrowserFlashUploadUrl"] =
+                                    Globals.ResolveUrl(
+                                        string.Format(
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
+                                            CultureInfo.CurrentCulture.Name));
+                                _settings["filebrowserImageUploadUrl"] =
+                                    Globals.ResolveUrl(
+                                        string.Format(
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
+                                            CultureInfo.CurrentCulture.Name));
+                            }
+
+                            _settings["filebrowserWindowWidth"] = "870";
+                            _settings["filebrowserWindowHeight"] = "600";
 
                             // Set Browser Authorize 
                             const bool isAuthorized = true;
@@ -979,6 +1058,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
             switch (objProvider.Attributes["ck_browser"])
             {
+                case "elfinder":
+                    currentSettings.BrowserMode = BrowserType.ElFinder;
+                    break;
                 case "ckfinder":
                     currentSettings.BrowserMode = BrowserType.CKFinder;
                     break;

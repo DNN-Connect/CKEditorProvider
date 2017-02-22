@@ -381,7 +381,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             if (roleInfo != null)
                             {
                                 roles.Add(roleInfo.RoleName);
-                            }
+                            }                           
                         }
                         else
                         {
@@ -405,6 +405,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                     switch (currentSettings.Browser)
                     {
+                        case "elfinder":
+                            foreach (string sRoleName in roles)
+                            {
+                                if (PortalSecurity.IsInRoles(sRoleName))
+                                {
+                                    currentSettings.BrowserMode = BrowserType.ElFinder;
+
+                                    break;
+                                }
+
+                                currentSettings.BrowserMode = BrowserType.None;
+                            }
+
+                            break;
                         case "ckfinder":
                             foreach (string sRoleName in roles)
                             {
@@ -1002,6 +1016,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                 switch (currentSettings.Browser)
                 {
+                    case "elfinder":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                currentSettings.BrowserMode = BrowserType.ElFinder;
+
+                                break;
+                            }
+
+                            currentSettings.BrowserMode = BrowserType.None;
+                        }
+
+                        break;
                     case "ckfinder":
                         foreach (string sRoleName in roles)
                         {
@@ -1284,6 +1312,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 switch (settings.Browser)
                 {
+                    case "elfinder":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                settings.BrowserMode = BrowserType.ElFinder;
+
+                                break;
+                            }
+
+                            settings.BrowserMode = BrowserType.None;
+                        }
+
+                        break;
                     case "ckfinder":
                         foreach (string sRoleName in roles)
                         {
