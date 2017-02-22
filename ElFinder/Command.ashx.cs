@@ -11,6 +11,7 @@ using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Newtonsoft.Json;
 
@@ -73,6 +74,38 @@ namespace DNNConnect.CKEditorProvider.ElFinder
         /// </summary>
         private string browserModus;
 
+        /// <summary>
+        ///   Gets Current Language from Url
+        /// </summary>
+        protected string LanguageCode
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(request.QueryString["lang"])
+                           ? request.QueryString["lang"]
+                           : "en-US";
+            }
+        }
+
+        /// <summary>
+        /// Gets the Name for the Current Resource file name
+        /// </summary>
+        /// <value>
+        /// The resource executable file.
+        /// </value>
+        protected string ResXFile
+        {
+            get
+            {
+
+                string fileRoot = string.Format(
+                    "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/{0}/Browser.resx",
+                    Localization.LocalResourceDirectory);
+
+                return fileRoot;
+            }
+        }
+
         #endregion
 
         public void ProcessRequest(HttpContext context)
@@ -84,11 +117,69 @@ namespace DNNConnect.CKEditorProvider.ElFinder
 
             NameValueCollection parameters = request.HttpMethod != "POST" ? request.QueryString : request.Form;
 
+            if (!string.IsNullOrEmpty(request.QueryString["mode"]))
+            {
+                currentSettings.SettingMode =
+                    (SettingsMode)Enum.Parse(typeof(SettingsMode), request.QueryString["mode"]);
+            }
+
+            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+            Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
+
+            var settingsDictionary = EditorController.GetEditorHostSettings();
+
+            var portalRoles = RoleController.Instance.GetRoles(_portalSettings.PortalId);
+
+            switch (currentSettings.SettingMode)
+            {
+                case SettingsMode.Default:
+                    // Load Default Settings
+                    currentSettings = SettingsUtil.GetDefaultSettings(
+                        _portalSettings,
+                        _portalSettings.HomeDirectoryMapPath,
+                        objProvider.Attributes["ck_configFolder"],
+                        portalRoles);
+                    break;
+                case SettingsMode.Portal:
+                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                        _portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        string.Format("DNNCKP#{0}#", request.QueryString["PortalID"]),
+                        portalRoles);
+                    break;
+                case SettingsMode.Page:
+                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                        _portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        string.Format("DNNCKT#{0}#", request.QueryString["tabid"]),
+                        portalRoles);
+                    break;
+                case SettingsMode.ModuleInstance:
+                    currentSettings = SettingsUtil.LoadModuleSettings(
+                        _portalSettings,
+                        currentSettings,
+                        string.Format(
+                            "DNNCKMI#{0}#INS#{1}#", request.QueryString["mid"], request.QueryString["ckId"]),
+                        int.Parse(request.QueryString["mid"]),
+                        portalRoles);
+                    break;
+            }
+
             bool imagesOnly = parameters["Type"] == "Image";
+
+            var mxHttpUpload = Utility.GetMaxUploadSize(true);
+
+            var mxUpload = currentSettings.UploadFileSizeLimit > 0 && currentSettings.UploadFileSizeLimit <= mxHttpUpload
+                            ? currentSettings.UploadFileSizeLimit
+                            : mxHttpUpload;
 
             DnnFileSystemDriver driver = new DnnFileSystemDriver(imagesOnly);
 
             var folder = StartingDir();
+
+            var rootAlias = Localization.GetString("FilesRootAlias.Text", ResXFile, LanguageCode);
 
             var root = new Root(folder)
             {
@@ -98,8 +189,8 @@ namespace DNNConnect.CKEditorProvider.ElFinder
                 // IsReadOnly = !User.IsInRole(AccountController.SuperUser)
 
                 IsReadOnly = false, // Can be readonly according to user's membership permission
-                Alias = "Files", // Beautiful name given to the root/home folder
-                MaxUploadSizeInKb = 500, // Limit imposed to user uploaded file <= 500 KB
+                Alias = string.IsNullOrEmpty(rootAlias) ? "Files" : rootAlias,
+                MaxUploadSizeInKb = mxUpload,
                 LockedFolders = new List<string>(new string[] { "Folder1" })
             };
 

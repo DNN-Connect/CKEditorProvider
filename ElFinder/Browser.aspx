@@ -23,6 +23,9 @@
         <script type="text/javascript">
             $(function () {
 
+                if ($(document.body).css('direction') == rtl)
+                    $(document.body).addClass('rtl');
+
                 var selectedFile = null;
                 var fileManager = null;
                 var options = <%= ElOptions %>;

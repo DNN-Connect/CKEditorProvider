@@ -575,6 +575,9 @@ namespace ElFinder
         {
             FullPath path = ParsePath(target);
 
+            var directory = _folderManager.GetFolder(path.File.FolderId); // overcome dnn cache bug
+            path.File.Folder = directory.FolderPath;
+
             UrlResponse response = new UrlResponse() { Url = _fileManager.GetUrl(path.File), Name = path.File.FileName };
 
             return Json(response);

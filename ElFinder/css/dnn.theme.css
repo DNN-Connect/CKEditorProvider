@@ -137,8 +137,8 @@ background: #FBFBFB;
 .elfinder-button-icon-rm 		{ background-image: url("../../../../../icons/sigma/FileDelete_16x16_Gray.png");background-position: 0 }
 .elfinder-button-icon-open      { background-image: url("../../../../../icons/sigma/FolderRefreshSync_16x16_Gray.png");background-position: 0 }
 .elfinder-button-icon-rename    { background-image: url("../../../../../icons/sigma/FileRename_16x16_Gray.png");background-position: 0 }
-.elfinder-button-icon-upload    { background-image: url("../../../../../icons/sigma/FileDownload_16x16_Gray.png");background-position: 0 }
-.elfinder-button-icon-download  { background-image: url("../../../../../icons/sigma/UploadFiles_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-download    { background-image: url("../../../../../icons/sigma/FileDownload_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-upload  { background-image: url("../../../../../icons/sigma/UploadFiles_16x16_Gray.png");background-position: 0 }
 .elfinder-button-icon-info     	{ background-image: url("../../../../../icons/sigma/ViewProperties_16x16_ToolBar.png");background-position: 0 }
 .elfinder-button-icon-quicklook { background-image: url("../../../../../icons/sigma/HtmlView_16x16_Standard.png");background-position: 0;margin-left: 4px }
 .elfinder-button-icon-view      { background-image: url("../../../../../icons/sigma/ThumbViewActive_16x16_Gray.png");background-position: 0;;margin-left: 2px }
@@ -152,3 +152,5 @@ background: #FBFBFB;
 .elfinder-rtl .elfinder-button-icon-back     	{ margin-right:-4px }
 .elfinder-rtl .elfinder-button-icon-forward     { margin-right:-6px }
 .elfinder-rtl .elfinder-button-icon-quicklook   { margin-right:-4px }
+
+.elfinder .elfinder-button.ui-state-disabled .elfinder-button-icon {opacity: .3;filter:Alpha(Opacity=30);}

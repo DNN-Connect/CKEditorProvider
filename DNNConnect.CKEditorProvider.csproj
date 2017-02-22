@@ -52,7 +52,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
@@ -62,6 +62,7 @@
     <NOWARN>1591</NOWARN>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
@@ -382,6 +383,7 @@
     <EmbeddedResource Include="CKEditorOptions.ascx.resx">
       <DependentUpon>CKEditorOptions.ascx.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ElFinder\App_LocalResources\Browser.aspx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Browser\ProcessImage.ashx" />
