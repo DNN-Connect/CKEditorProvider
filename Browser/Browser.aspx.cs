@@ -785,35 +785,28 @@ namespace DNNConnect.CKEditorProvider.Browser
                         objProvider.Attributes["ck_configFolder"],
                         portalRoles);
                     break;
-                case SettingsMode.Host:
-                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        _portalSettings,
-                        currentSettings,
-                        settingsDictionary,
-                        "DNNCKH#",
-                        portalRoles);
-                    break;
                 case SettingsMode.Portal:
-                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
                         _portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        $"DNNCKP#{request.QueryString["PortalID"]}#",
+                        string.Format("DNNCKP#{0}#", request.QueryString["PortalID"]),
                         portalRoles);
                     break;
                 case SettingsMode.Page:
-                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
                         _portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        $"DNNCKT#{request.QueryString["tabid"]}#",
+                        string.Format("DNNCKT#{0}#", request.QueryString["tabid"]),
                         portalRoles);
                     break;
                 case SettingsMode.ModuleInstance:
                     currentSettings = SettingsUtil.LoadModuleSettings(
                         _portalSettings,
                         currentSettings,
-                        $"DNNCKMI#{request.QueryString["mid"]}#INS#{request.QueryString["ckId"]}#",
+                        string.Format(
+                            "DNNCKMI#{0}#INS#{1}#", request.QueryString["mid"], request.QueryString["ckId"]),
                         int.Parse(request.QueryString["mid"]),
                         portalRoles);
                     break;
@@ -2845,7 +2838,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Show Preview of the Page links
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="eventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="eeventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void TreeTabs_NodeClick(object sender, EventArgs eventArgs)
         {
             if (dnntreeTabs.SelectedNode == null)
@@ -3044,7 +3037,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Load Files of Selected Folder
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="eventArgs">The <see cref="EventArgs" /> instance containing the event data.</param>
+        /// <param name="e">The <see cref="RadTreeNodeEventArgs" /> instance containing the event data.</param>
         private void FoldersTree_NodeClick(object sender, EventArgs eventArgs)
         {
             var folderId = Convert.ToInt32(FoldersTree.SelectedNode.Value);
