@@ -280,7 +280,7 @@ namespace DNNConnect.CKEditorProvider.Controls
                         if (Files.Items.FindByText(fileName) != null)
                         {
                             Files.ClearSelection();
-                            Files.SelectedIndex = Files.Items.IndexOf(Files.Items.FindByText(fileName));
+                            Files.Items.FindByText(fileName).Selected = true;
                         }
                     }
                 }

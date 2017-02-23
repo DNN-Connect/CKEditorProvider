@@ -33,7 +33,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DNNConnect.CKEditorProvider.Web
 {
-    using DotNetNuke.Entities.Host;
+
 
     /// <summary>
     /// The CKEditor control.
@@ -46,6 +46,11 @@ namespace DNNConnect.CKEditorProvider.Web
         /// The provider type.
         /// </summary>
         private const string ProviderType = "htmlEditor";
+
+        /// <summary>
+        /// Has MS Ajax Installed?
+        /// </summary>
+        private static bool? _hasMsAjax;
 
         /// <summary>
         /// The portal settings.
@@ -497,7 +502,7 @@ namespace DNNConnect.CKEditorProvider.Web
                             }
 
                             _settings["filebrowserWindowWidth"] = "870";
-                            _settings["filebrowserWindowHeight"] = "800";
+                            _settings["filebrowserWindowHeight"] = "600";
 
                             // Set Browser Authorize 
                             const bool isAuthorized = true;
@@ -555,6 +560,85 @@ namespace DNNConnect.CKEditorProvider.Web
 
                             HttpContext.Current.Session["CKDNNRootDirId"] = currentSettings.BrowserRootDirId;
                             HttpContext.Current.Session["CKDNNUpDirId"] = currentSettings.UploadDirId;
+
+                            // Set Browser Authorize 
+                            const bool isAuthorized = true;
+
+                            HttpContext.Current.Session["CKE_DNNIsAuthorized"] = isAuthorized;
+
+                            DataCache.SetCache("CKE_DNNIsAuthorized", isAuthorized);
+                        }
+
+                        break;
+                    case BrowserType.ElFinder:
+                        {
+                            _settings["filebrowserBrowseUrl"] =
+                                Globals.ResolveUrl(
+                                    string.Format(
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Type=Link&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
+                                        CultureInfo.CurrentCulture.Name));
+                            _settings["filebrowserImageBrowseUrl"] =
+                                Globals.ResolveUrl(
+                                    string.Format(
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Type=Image&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
+                                        CultureInfo.CurrentCulture.Name));
+                            _settings["filebrowserFlashBrowseUrl"] =
+                                Globals.ResolveUrl(
+                                    string.Format(
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Type=Flash&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
+                                        CultureInfo.CurrentCulture.Name));
+
+                            if (Utility.CheckIfUserHasFolderWriteAccess(currentSettings.UploadDirId, _portalSettings))
+                            {
+                                _settings["filebrowserUploadUrl"] =
+                                    Globals.ResolveUrl(
+                                        string.Format(
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
+                                            CultureInfo.CurrentCulture.Name));
+                                _settings["filebrowserFlashUploadUrl"] =
+                                    Globals.ResolveUrl(
+                                        string.Format(
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
+                                            CultureInfo.CurrentCulture.Name));
+                                _settings["filebrowserImageUploadUrl"] =
+                                    Globals.ResolveUrl(
+                                        string.Format(
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ElFinder/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
+                                            CultureInfo.CurrentCulture.Name));
+                            }
+
+                            _settings["filebrowserWindowWidth"] = "870";
+                            _settings["filebrowserWindowHeight"] = "600";
 
                             // Set Browser Authorize 
                             const bool isAuthorized = true;
@@ -917,7 +1001,10 @@ namespace DNNConnect.CKEditorProvider.Web
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void CKEditorInit(object sender, EventArgs e)
         {
-            Page?.RegisterRequiresPostBack(this); // Ensures that postback is handled
+            if (Page != null)
+            {
+                Page.RegisterRequiresPostBack(this); // Ensures that postback is handled
+            }
 
             myParModule = (PortalModuleBase)FindModuleInstance(this);
 
@@ -971,6 +1058,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
             switch (objProvider.Attributes["ck_browser"])
             {
+                case "elfinder":
+                    currentSettings.BrowserMode = BrowserType.ElFinder;
+                    break;
                 case "ckfinder":
                     currentSettings.BrowserMode = BrowserType.CKFinder;
                     break;
@@ -1001,65 +1091,27 @@ namespace DNNConnect.CKEditorProvider.Web
             // Set Current Mode to Default
             currentSettings.SettingMode = SettingsMode.Default;
 
-            const string hostKey = "DNNCKH#";
             var portalKey = string.Format("DNNCKP#{0}#", _portalSettings.PortalId);
             var pageKey = string.Format("DNNCKT#{0}#", _portalSettings.ActiveTab.TabID);
             var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", parentModulId, ID);
 
-            // Load Host Settings ?!
-            if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))
-            {
-                var hostPortalRoles = RoleController.Instance.GetRoles(Host.HostPortalID);
-                currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                    _portalSettings,
-                    currentSettings,
-                    settingsDictionary,
-                    hostKey,
-                    hostPortalRoles);
-
-                // Set Current Mode to Host
-                currentSettings.SettingMode = SettingsMode.Host;
-
-                // reset the roles to the correct portal
-                if (_portalSettings.PortalId != Host.HostPortalID)
-                {
-                    foreach (var toolbarRole in currentSettings.ToolBarRoles)
-                    {
-                        var roleName = hostPortalRoles.FirstOrDefault(role => role.RoleID == toolbarRole.RoleId)?.RoleName ?? string.Empty;
-                        var roleId = portalRoles.FirstOrDefault(role => role.RoleName.Equals(roleName))?.RoleID ?? Null.NullInteger;
-                        toolbarRole.RoleId = roleId;
-                    }
-
-                    foreach (var uploadRoles in currentSettings.UploadSizeRoles)
-                    {
-                        var roleName = hostPortalRoles.FirstOrDefault(role => role.RoleID == uploadRoles.RoleId)?.RoleName ?? string.Empty;
-                        var roleId = portalRoles.FirstOrDefault(role => role.RoleName.Equals(roleName))?.RoleID ?? Null.NullInteger;
-                        uploadRoles.RoleId = roleId;
-                    }
-                }
-            }
-
             // Load Portal Settings ?!
-            if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, portalKey))
+            if (SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, portalKey))
             {
                 /* throw new ApplicationException(settingsDictionary.FirstOrDefault(
                              setting => setting.Name.Equals(string.Format("{0}{1}", portalKey, "StartupMode"))).Value);*/
 
-                currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                    _portalSettings, 
-                    currentSettings, 
-                    settingsDictionary, 
-                    portalKey,
-                    portalRoles);
+                currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                    _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
 
                 // Set Current Mode to Portal
                 currentSettings.SettingMode = SettingsMode.Portal;
             }
 
             // Load Page Settings ?!
-            if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey))
+            if (SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, pageKey))
             {
-                currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                currentSettings = SettingsUtil.LoadPortalOrPageSettings(
                     _portalSettings, currentSettings, settingsDictionary, pageKey, portalRoles);
 
                 // Set Current Mode to Page

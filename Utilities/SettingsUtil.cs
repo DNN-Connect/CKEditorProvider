@@ -14,11 +14,9 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Common.Utilities;
 
 namespace DNNConnect.CKEditorProvider.Utilities
 {
-    using DotNetNuke.Entities.Host;
 
     /// <summary>
     /// Settings Base Helper Class
@@ -35,7 +33,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns if Portal or Page Settings Exists
         /// </returns>
-        internal static bool CheckSettingsExistByKey(List<EditorHostSetting> editorHostSettings, string key)
+        internal static bool CheckExistsPortalOrPageSettings(List<EditorHostSetting> editorHostSettings, string key)
         {
             if (
                 editorHostSettings.Any(
@@ -47,7 +45,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SKIN))).Value);
             }
 
-            // No Settings Found
+            // No Portal/Page Settings Found
             return false;
         }
 
@@ -59,7 +57,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>Returns if The Module Settings Exists or not.</returns>
         internal static bool CheckExistsModuleSettings(string moduleKey, int moduleId)
         {
-            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
+            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
 
             return hshModSet.Keys.Cast<string>().Any(key => key.StartsWith(moduleKey));
         }
@@ -72,7 +70,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>Returns if The Module Settings Exists or not.</returns>
         internal static bool CheckExistsModuleInstanceSettings(string moduleKey, int moduleId)
         {
-            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
+            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
 
             return !string.IsNullOrEmpty((string)hshModSet[string.Format("{0}skin", moduleKey)]);
         }
@@ -88,7 +86,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the Filled Settings
         /// </returns>
-        internal static EditorProviderSettings LoadEditorSettingsByKey(
+        internal static EditorProviderSettings LoadPortalOrPageSettings(
             PortalSettings portalSettings,
             EditorProviderSettings currentSettings,
             List<EditorHostSetting> editorHostSettings,
@@ -105,39 +103,37 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 if (!filteredSettings.Any(s => s.Name.Equals(string.Format("{0}{1}", key, info.Name))))
                 {
-                    if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
-                var settingValue = string.Empty;
-                if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
+                /*if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
                 {
-                    settingValue =
-                        filteredSettings.FirstOrDefault(
-                            setting => setting.Name.Equals(string.Format("{0}{1}", key, info.Name))).Value;
+                    continue;
+                }*/
 
-                    if (string.IsNullOrEmpty(settingValue))
-                    {
-                        continue;
-                    }
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        setting => setting.Name.Equals(string.Format("{0}{1}", key, info.Name))).Value;
 
-                    switch (info.PropertyType.Name)
-                    {
-                        case "String":
-                            info.SetValue(currentSettings.Config, settingValue, null);
-                            break;
-                        case "Int32":
-                            info.SetValue(currentSettings.Config, int.Parse(settingValue), null);
-                            break;
-                        case "Decimal":
-                            info.SetValue(currentSettings.Config, decimal.Parse(settingValue), null);
-                            break;
-                        case "Boolean":
-                            info.SetValue(currentSettings.Config, bool.Parse(settingValue), null);
-                            break;
-                    }
+                if (string.IsNullOrEmpty(settingValue))
+                {
+                    continue;
+                }
+
+                switch (info.PropertyType.Name)
+                {
+                    case "String":
+                        info.SetValue(currentSettings.Config, settingValue, null);
+                        break;
+                    case "Int32":
+                        info.SetValue(currentSettings.Config, int.Parse(settingValue), null);
+                        break;
+                    case "Decimal":
+                        info.SetValue(currentSettings.Config, decimal.Parse(settingValue), null);
+                        break;
+                    case "Boolean":
+                        info.SetValue(currentSettings.Config, bool.Parse(settingValue), null);
+                        break;
                 }
 
                 switch (info.Name)
@@ -172,7 +168,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             typeof(CodeMirror).GetProperties()
                                 .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))).Value;
                             switch (codeMirrorInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -203,7 +198,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     case "WordCount":
                         foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
                         {
-                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))).Value;
                             switch (wordCountInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -387,7 +381,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             if (roleInfo != null)
                             {
                                 roles.Add(roleInfo.RoleName);
-                            }
+                            }                           
                         }
                         else
                         {
@@ -411,6 +405,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                     switch (currentSettings.Browser)
                     {
+                        case "elfinder":
+                            foreach (string sRoleName in roles)
+                            {
+                                if (PortalSecurity.IsInRoles(sRoleName))
+                                {
+                                    currentSettings.BrowserMode = BrowserType.ElFinder;
+
+                                    break;
+                                }
+
+                                currentSettings.BrowserMode = BrowserType.None;
+                            }
+
+                            break;
                         case "ckfinder":
                             foreach (string sRoleName in roles)
                             {
@@ -776,7 +784,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         internal static EditorProviderSettings LoadModuleSettings(PortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
         {
-            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
+            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
 
             var roles = new ArrayList();
 
@@ -1008,6 +1016,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                 switch (currentSettings.Browser)
                 {
+                    case "elfinder":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                currentSettings.BrowserMode = BrowserType.ElFinder;
+
+                                break;
+                            }
+
+                            currentSettings.BrowserMode = BrowserType.None;
+                        }
+
+                        break;
                     case "ckfinder":
                         foreach (string sRoleName in roles)
                         {
@@ -1271,7 +1293,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings?.PortalId ?? Host.HostPortalID, int.Parse(sRoleName));
+                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings.PortalId, int.Parse(sRoleName));
 
                             if (roleInfo != null)
                             {
@@ -1290,6 +1312,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 switch (settings.Browser)
                 {
+                    case "elfinder":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                settings.BrowserMode = BrowserType.ElFinder;
+
+                                break;
+                            }
+
+                            settings.BrowserMode = BrowserType.None;
+                        }
+
+                        break;
                     case "ckfinder":
                         foreach (string sRoleName in roles)
                         {

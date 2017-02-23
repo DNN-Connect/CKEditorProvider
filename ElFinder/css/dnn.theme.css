@@ -1,0 +1,156 @@
+body{
+	font-size: 12pt!important;
+}
+/* dialogs */
+.ui-dialog { position: absolute; padding: 0; width: 300px; overflow: hidden; border: 1px solid #aaa}
+.ui-dialog .ui-dialog-titlebar { padding: .4em 1em; position: relative;  }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; } 
+.ui-dialog .ui-dialog-titlebar-close { position: absolute; top: 50%!important; width: 18px!important; margin: -10px 0 0 0!important; padding: 0!important; height: 18px!important; right:10px!important}
+.elfinder-rtl .ui-dialog .ui-dialog-titlebar-close
+{
+	right:auto !important;
+}
+.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }
+.std42-dialog, .std42-dialog .ui-widget-content { background-color:#fafafa; background-image:none; background-clip: content-box; }
+
+/* navbar */
+.elfinder .elfinder-navbar { background:#FBFBFB; }
+.elfinder-navbar .ui-state-hover  { color:#000; background-color:#edf1f4; border-color:#bdcbd8; }
+.elfinder-navbar .ui-state-active { background: #D3D3D3; border-color:#D3D3D3; color:#fff; }
+.elfinder-navbar .elfinder-droppable-active {background:#A7C6E5 !important;}
+/* disabled elfinder */
+.elfinder-disabled .elfinder-navbar .ui-state-active { background: #dadada; border-color:#aaa; color:#fff; }
+
+
+/* current directory */
+/* selected file in "icons" view */
+.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-hover { background:#ccc; }
+
+/* list view*/
+.elfinder-cwd table thead td.ui-state-hover { background:#ddd; }
+.elfinder-cwd table tr:nth-child(odd) { background-color:#F9F9F9; }
+.elfinder-cwd table tr {
+	border: 1px solid transparent;
+	border-top:1px solid #fff;
+}
+.elfinder-cwd table thead tr { background-color:#fff!important;}
+.elfinder-cwd table thead tr td{border-bottom:2px solid #ddd!important; }
+.elfinder .elfinder-cwd table thead td.ui-state-active {
+background:#D2D4D2;
+}
+.elfinder-cwd .elfinder-droppable-active td { background:#A7C6E5 !important; }
+
+
+/* common selected background/color */
+.elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover,
+.elfinder-cwd table td.ui-state-hover,
+.elfinder-button-menu .ui-state-hover { background: #D2D4D2; color:#fff;}
+/* disabled elfinder */
+.elfinder-disabled .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover,
+.elfinder-disabled .elfinder-cwd table td.ui-state-hover { background:#dadada;}
+
+/* statusbar */
+.elfinder .elfinder-statusbar { color:#555; }
+.elfinder .elfinder-statusbar a { text-decoration:none; color:#555;}
+
+
+.std42-dialog .elfinder-help, .std42-dialog .elfinder-help .ui-widget-content { background:#fff;}
+
+/* contextmenu */
+.elfinder-contextmenu .ui-state-hover { background: #D2D4D2; color:#fff; }
+.elfinder-contextmenu .ui-state-hover .elfinder-contextmenu-arrow { background-image:url('../img/arrows-active.png'); }
+
+.elfinder-rtl div.ui-resizable
+{
+    right: 0;
+}
+
+div.ui-resizable.std42-dialog
+{
+	right: auto!important;
+}
+
+.elfinder-toolbar, .elfinder-statusbar
+{
+background: #D3D3D3;
+border-radius: 0!important;
+border-bottom: 2px solid #C0C0C0;
+}
+
+.elfinder-statusbar
+{
+border-top: 2px solid #C0C0C0;
+}
+
+.elfinder-button
+{
+background: #FBFBFB;
+}
+
+.elfinder-actions
+{
+	padding: 5px;
+}
+.dnnForm .ui-draggable
+{
+	cursor: default;
+}
+.dnnForm .ui-resizable.std42-dialog
+{
+	position: absolute;
+}
+/* icon inside button */
+.elfinder-button-icon {
+	width:20px;
+	height:20px;
+	background-image:url('../img/dnn.toolbar.png');
+}
+.elfinder-navbar-icon{
+	background-image:url('../img/dnn.toolbar.png');
+}
+/* button */
+.elfinder .elfinder-button {
+	width:20px;
+	height:20px;
+}
+
+/* icon/thumbnail */
+.elfinder-cwd-icon {
+	background-image: url('../img/dnn.icons-big.png');
+}
+/* dir/file permissions and symlink markers */
+.elfinder-lock,
+.elfinder-perms,
+.elfinder-symlink {
+	background-image:url(../img/dnn.toolbar.png);
+}
+.elfinder-tree  .elfinder-navbar-root .elfinder-navbar-icon { background-position:0 -16px;}
+.elfinder-button-icon-reload  	{ background-image: url("../../../../../icons/sigma/FolderRefreshSync_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-mkdir   	{ background-image: url("../../../../../icons/sigma/FolderCreate_16x16_Gray.png");background-position: 0;margin-left:2px }
+.elfinder-button-icon-rm 		{ background-image: url("../../../../../icons/sigma/FileDelete_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-open      { background-image: url("../../../../../icons/sigma/FolderRefreshSync_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-rename    { background-image: url("../../../../../icons/sigma/FileRename_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-download    { background-image: url("../../../../../icons/sigma/FileDownload_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-upload  { background-image: url("../../../../../icons/sigma/UploadFiles_16x16_Gray.png");background-position: 0 }
+.elfinder-button-icon-info     	{ background-image: url("../../../../../icons/sigma/ViewProperties_16x16_ToolBar.png");background-position: 0 }
+.elfinder-button-icon-quicklook { background-image: url("../../../../../icons/sigma/HtmlView_16x16_Standard.png");background-position: 0;margin-left: 4px }
+.elfinder-button-icon-view      { background-image: url("../../../../../icons/sigma/ThumbViewActive_16x16_Gray.png");background-position: 0;;margin-left: 2px }
+.elfinder-button-icon-view-list { background-image: url("../../../../../icons/sigma/ListView_16x16_Gray.png	");background-position: 0;margin-left: 2px }
+.elfinder-button-icon-back     	{ background-image: url("../../../../../images/arrow-left.png");background-position: 0;margin-left:4px}
+.elfinder-button-icon-forward   { background-image: url("../../../../../images/arrow-right.png");background-position: 0;margin-left:4px}
+
+.elfinder-rtl .elfinder-button-icon-view      	{ margin-right:-2px }
+.elfinder-rtl .elfinder-button-icon-view-list 	{ margin-right:-2px }
+.elfinder-rtl .elfinder-button-icon-mkdir 	    { margin-right:-2px }
+.elfinder-rtl .elfinder-button-icon-back     	{ margin-right:-4px }
+.elfinder-rtl .elfinder-button-icon-forward     { margin-right:-6px }
+.elfinder-rtl .elfinder-button-icon-quicklook   { margin-right:-4px }
+
+.elfinder .elfinder-button.ui-state-disabled .elfinder-button-icon {opacity: .3;filter:Alpha(Opacity=30);}
