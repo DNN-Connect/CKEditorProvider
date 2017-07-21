@@ -202,6 +202,7 @@
       <ToolbarGroup>
         <items>
           <string>Image</string>
+          <string>Html5Video</string>
           <string>Mathjax</string>
           <string>oembed</string>
           <string>syntaxhighlight</string>
@@ -211,7 +212,7 @@
           <string>SpecialChar</string>
           <string>PageBreak</string>
           <string>Iframe</string>
-          <string>qrcodes</string>
+          <string>qrcodes</string>          
         </items>
         <name>insert</name>
       </ToolbarGroup>

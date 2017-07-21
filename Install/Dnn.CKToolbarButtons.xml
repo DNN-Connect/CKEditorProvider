@@ -248,4 +248,8 @@
     <ToolbarName>-</ToolbarName>
     <ToolbarIcon>separator.png</ToolbarIcon>
   </ToolbarButton>
+  <ToolbarButton>
+    <ToolbarName>Html5video</ToolbarName>
+    <ToolbarIcon>html5video.png</ToolbarIcon>
+  </ToolbarButton>
 </ArrayOfToolbarButton>
