@@ -381,8 +381,6 @@ namespace DNNConnect.CKEditorProvider
                     return;
                 }
 
-                BindUserGroupsGridView();
-
                 BindOptionsData();
 
                 SetLanguage();
@@ -397,6 +395,8 @@ namespace DNNConnect.CKEditorProvider
                 RenderUrlControls();
 
                 FillRoles();
+
+                BindUserGroupsGridView();
 
                 // Remove CKFinder from the Browser list if not installed
                 if (
@@ -971,9 +971,6 @@ namespace DNNConnect.CKEditorProvider
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
-            
-            lblRole = (Label)UploadFileLimits.HeaderRow.FindControl("lblRole");
-            lblSelToolb = (Label)UploadFileLimits.HeaderRow.FindControl("SizeLimitLabel");
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("SizeLimitLabel.Text", ResXFile, LangCode);
