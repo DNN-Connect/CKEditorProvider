@@ -971,9 +971,6 @@ namespace DNNConnect.CKEditorProvider
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
-
-            lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
-            lblSelToolb.Text = Localization.GetString("SizeLimitLabel.Text", ResXFile, LangCode);
         }
 
         /// <summary>
