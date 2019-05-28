@@ -375,8 +375,7 @@
     </form>
     <script type="text/javascript">
         $(function() {
-            $(document).on('change', '#<%= this.OverrideFile.ClientID %>', function () {                 
-                $('#fileupload').fileupload('destroy');
+            $(document).on('change', '#<%= this.OverrideFile.ClientID %>', function () {                                 
                 setupFileUpload(this.checked);                
             });
 
