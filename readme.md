@@ -1,4 +1,3 @@
 ﻿# CKEditorProvider
-[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/CKEditorProvider%20%5BCI%5D)](https://dev.azure.com/dotnet/DNN/_build/latest?definitionId=35)
 
-An HTML Editor Provider for DNN using the CKEditor.
+As of DNN 9.8.0, this HTML Editor Provider is now [included in the Dnn.Platform repository](https://github.com/dnnsoftware/Dnn.Platform/tree/v9.8.0/DNN%20Platform/Providers/HtmlEditorProviders/DNNConnect.CKE). It is no longer maintained in this repository.
